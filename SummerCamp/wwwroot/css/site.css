@@ -13,10 +13,34 @@
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+    background-image: url('../Images/background.jpg');
+    background-size: cover;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
+.footer {
+    background-color: lightgray;
+    opacity: 0.5;
+}
+
+.btn{
+    margin:0.5vh;
+}
+.btn-primary:hover {
+    background-color: #034a02 !important;
+    border-color: #034a02 !important;
+}
+
+.btn-primary:focus {
+    background-color: #095408 !important;
+    border-color: #095408 !important;
+}
+.btn-primary {
+    background-color: #0f7a0d;
+    border-color: #0f7a0d;
+}
+

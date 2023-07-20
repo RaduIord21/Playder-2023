@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Adauga Antrenor";
+}
+@model CompetitonMatchViewModel
+
+<form id="myForm" asp-action="Edit" method="post" class="needs-validation" novalidate>
+    <div class="form-group">
+        <input asp-for="Id" hidden />
+        <input asp-for="CompetitionId" hidden />
+        <input asp-for="AwayTeamId" hidden />
+        <input asp-for="HomeTeamId" hidden />
+
+        <label asp-for="AwayTeamId" class="control-label"></label>
+        @Html.DropDownList("AwayTeamId", (IEnumerable<SelectListItem>)ViewData["AwayTeams"], "Selecteaza Echipa Gazda", new { @class = "form-control", @disabled = "disabled" })
+        <span asp-validation-for="AwayTeamId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="HomeTeamId" class="control-label"></label>
+        @Html.DropDownList("HomeTeamId", (IEnumerable<SelectListItem>)ViewData["HomeTeams"], "Selecteaza Echipa Oaspete", new { @class = "form-control", @disabled = "disabled" })
+
+        <span asp-validation-for="HomeTeamId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AwayTeamGoals" class="control-label"></label>
+        <input asp-for="AwayTeamGoals" class="control-label" min="0" max="100" />
+        <span asp-validation-for="AwayTeamGoals" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="HomeTeamGoals" class="control-label"></label>
+        <input asp-for="HomeTeamGoals" class="control-label" min="0" max="100" />
+        <span asp-validation-for="HomeTeamGoals" class="text-danger"></span>
+    </div>
+    <!-- Additional form fields and submit button -->
+
+    <button type="submit" class="btn btn-primary">Salveaza mdoificarile</button>
+    <a href="index" class="btn btn-primary">Renunta</a>
+</form>

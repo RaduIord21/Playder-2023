@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Adauga Sponsor";
+
+}
+
+@model SponsorViewModel
+
+<form id="myForm" asp-action="Add" method="post" class="needs-validation" novalidate>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <!-- Additional form fields and submit button -->
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a href="index" class="btn btn-primary"> Back</a>
+</form>

@@ -5,6 +5,10 @@ VisualStudioVersion = 25.0.1706.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SummerCamp", "SummerCamp\SummerCamp.csproj", "{110F3659-B50E-4DD9-AD9A-942E4A250DCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SummerCamp.DataModels", "SummerCamp.DataModels\SummerCamp.DataModels.csproj", "{98C468E3-756F-47A8-826A-66EA77BC6BAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SummerCamp.DataAccessLayer", "SummerCamp.DataAccessLayer\SummerCamp.DataAccessLayer.csproj", "{7C64F82F-B381-4422-BE24-C545C648F8A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{110F3659-B50E-4DD9-AD9A-942E4A250DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{110F3659-B50E-4DD9-AD9A-942E4A250DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{110F3659-B50E-4DD9-AD9A-942E4A250DCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98C468E3-756F-47A8-826A-66EA77BC6BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98C468E3-756F-47A8-826A-66EA77BC6BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98C468E3-756F-47A8-826A-66EA77BC6BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98C468E3-756F-47A8-826A-66EA77BC6BAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C64F82F-B381-4422-BE24-C545C648F8A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C64F82F-B381-4422-BE24-C545C648F8A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C64F82F-B381-4422-BE24-C545C648F8A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C64F82F-B381-4422-BE24-C545C648F8A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

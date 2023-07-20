@@ -1,0 +1,43 @@
+﻿@using SummerCamp.Models
+@model IEnumerable<TeamViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<h1 class="centered-title">Administreaza echipa</h1>
+<a asp-controller="Teams" asp-action="Add" class="btn btn-primary">Adauga Echipa</a>
+<div class="text-center">
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped table-hover sortable">
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="6">No Records found.</td>
+                </tr>
+            }
+            else
+            {
+                <thead class="thead-dark">
+                    <tr>
+                        <th> Nume</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>
+                                <a asp-action="Edit" asp-controller="Teams" asp-route-teamId="@item.Id" class="btn btn-primary">
+                                    Editare
+                                </a>
+                                <a asp-action="Delete" asp-controller="Teams" asp-route-teamId="@item.Id" class="btn btn-primary">
+                                    Stergere
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+        </table>
+    </div>
+</div>

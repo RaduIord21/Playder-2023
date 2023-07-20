@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Detalii";
+}
+
+@model PlayerViewModel
+<table class="table table-bordered table-condensed table-striped table-hover sortable">
+    <tr>
+        <th>
+            Nume
+        </th>
+        <td>
+            @Model.FullName
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Data nasteri
+        </th>
+        <td>
+            @Model.BirthDate
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Adresa
+        </th>
+        <td>
+            @Model.Adress
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Numar de pe tricou
+        </th>
+        <td>
+            @Model.ShirtNumber
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Pozitie
+        </th>
+        <td>
+            @Model.Position
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Echipa
+        </th>
+        <td>
+            @(Model.TeamId  != null ? Model.Team.Name : "N/A")
+        </td>
+    </tr>
+</table>
+<a href ="index" class="btn btn-primary">Renunta</a>

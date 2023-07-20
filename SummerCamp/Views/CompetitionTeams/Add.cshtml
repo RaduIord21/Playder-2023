@@ -1,0 +1,18 @@
+﻿
+@model CompetitionTeamViewModel
+<form id="myForm" asp-action="Add" method="post" class="needs-validation" novalidate>
+    <div class="form-group border border-2 rounded-3 p-2 m-2" >
+        <input asp-for="CompetitionId" hidden class="form-control" />
+        <h5><label asp-for="SelectedTeamIds" class="control-label">Echipe</label></h5>
+        @foreach (var team in ViewBag.Teams)
+        {
+            <div class="m-3">
+                <input type="checkbox" id="team@team.Value" name="SelectedTeamIds" value="@team.Id" @(Model.SelectedTeamIds != null && Model.SelectedTeamIds.Contains(Convert.ToInt32(team.Id)) ? "checked" : "")>
+                <label for="Team@Team.Name">@team.Name</label>
+            </div>
+        }
+        <span asp-validation-for="SelectedTeamIds" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Creeaza</button>
+    <a href="index" class="btn btn-primary">Renunta</a>
+</form>

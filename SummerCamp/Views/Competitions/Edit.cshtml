@@ -1,0 +1,43 @@
+﻿@{
+
+    ViewData["Title"] = "Adauga Antrenor";
+
+}
+
+@model CompetitionViewModel
+
+<form id="myForm" asp-action="Edit" method="post" class="needs-validation" novalidate>
+    <div class="form-group">
+        <input asp-for="Id" hidden />
+
+        <label asp-for="Name">Schimba Numele</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+
+        <label asp-for="NumberOfTeams">Numar de Echipe :</label>
+        <input asp-for="NumberOfTeams" class="form-control" />
+        <span asp-validation-for="NumberOfTeams" class="text-danger"></span>
+
+        <label asp-for="Adress">Locatia Competitiei</label>
+        <input asp-for="Adress" class="form-control" />
+        <span asp-validation-for="Adress" class="text-danger"></span>
+
+        <label asp-for="StartDate">Data de start: </label>
+        <input asp-for="StartDate" class="form-control" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+
+        <label asp-for="EndDate">Data de terminare (optional)</label>
+        <input asp-for="EndDate" class="form-control" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+
+        <div class="form-group">
+            <label asp-for="SponsorId" class="control-label"></label>
+            @Html.DropDownList("SponsorId", (IEnumerable<SelectListItem>)ViewData["Sponsors"], "Selecteaza sponsor", new { @class = "form-control" })
+            <span asp-validation-for="SponsorId" class="text-danger"></span>
+            @ViewData["Error"]
+        </div>
+
+    </div>
+    <button type="submit" class="btn btn-primary">Salveaza modificarile</button>
+    <a href="index" class="btn btn-primary"> Renunta</a>
+</form>

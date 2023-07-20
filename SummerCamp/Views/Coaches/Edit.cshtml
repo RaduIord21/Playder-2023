@@ -1,0 +1,22 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    ViewData["Title"] = "Adauga Antrenor";
+
+}
+
+@model CoachViewModel
+
+<form id="myForm" asp-action="Edit" method="post" class="needs-validation" novalidate>
+    <div class="form-group">
+        <input asp-for="Id" hidden />
+        <label asp-for="Name">Schimba Numele</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Salveaza modificarile</button>
+    <a href="index" class="btn btn-primary">Renunta</a>
+</form>
+

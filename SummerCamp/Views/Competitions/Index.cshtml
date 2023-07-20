@@ -1,0 +1,57 @@
+﻿@using SummerCamp.Models
+@model IEnumerable<CompetitionViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<h1 class="centered-title">Administreaza competitia</h1>
+<a asp-controller="Competitions" asp-action="Add" class="btn btn-primary">Adauga Competite</a>
+<div class="text-center">
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped table-hover sortable">
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="6">No Records found.</td>
+                </tr>
+            }
+            else
+            {
+                <thead class="thead-dark">
+                    <tr>
+                        <th> Nume</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>
+                                <a asp-action="Edit" asp-controller="Competitions" asp-route-competitionId="@item.Id" class="btn btn-primary">
+                                    Editare
+                                </a>
+                            </td>
+                            <td>
+                                <a asp-action="Delete" asp-controller="Competitions" asp-route-competitionId="@item.Id" class="btn btn-primary">
+                                    Stergere
+                                </a>
+                            </td>
+                            <td>
+                                <a asp-action="Index" asp-controller="CompetitionMatches" asp-route-competitionId="@item.Id" class="btn btn-primary">Meciuri</a>
+                            </td>
+                            <td>
+                                <a asp-action="Index" asp-controller="CompetitionTeams" asp-route-competitionId="@item.Id" class="btn btn-primary">Clasament</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+        </table>
+    </div>
+</div>@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
