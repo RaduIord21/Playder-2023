@@ -18,7 +18,7 @@ namespace SummerCamp.DataAccessLayer.Repositories
 
         public IList<T> GetAll()
         {
-            return dataSet.ToList();
+             return dataSet.ToList();
         }
 
         public T? GetById(int id)

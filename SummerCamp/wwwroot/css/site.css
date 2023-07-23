@@ -44,3 +44,11 @@ body {
     border-color: #0f7a0d;
 }
 
+.main-content{
+    overflow:auto;
+}
+
+#main-content{
+    overflow:auto;
+    max-height:75vh;
+}

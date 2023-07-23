@@ -42,14 +42,14 @@
             </div>
         </nav>
     </header>
-    <div class="container d-flex position-absolute justify-content-center" style="max-width:100%; margin-top: 3vh; background-image:url('../Images/transparent.png');">
-        <main role="main" class="p-4 w-75" style="background-color:white; opacity:0.8; border-radius:5vh" >
+    <div class="container d-flex position-absolute justify-content-center main-content" style="max-width:100%; margin-top: 3vh;">
+        <main role="main" class="p-4 w-75" id="main-content" style="background-color:white; opacity:0.8; border-radius:5vh" >
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container position-sticky">
+        <div class="container">
             &copy; 2023 - SummerCamp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
