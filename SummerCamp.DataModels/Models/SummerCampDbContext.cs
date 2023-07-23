@@ -31,6 +31,8 @@ public partial class SummerCampDbContext : DbContext
 
     public virtual DbSet<TeamSponsor> TeamSponsors { get; set; }
 
+    public virtual DbSet<UserCredential> UserCredentials { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=ConnectionStrings:SummerCamp");
 
@@ -174,6 +176,17 @@ public partial class SummerCampDbContext : DbContext
             entity.HasOne(d => d.Team).WithMany(p => p.TeamSponsors)
                 .HasForeignKey(d => d.TeamId)
                 .HasConstraintName("FK__TeamSpons__TeamI__4222D4EF");
+        });
+
+        modelBuilder.Entity<UserCredential>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__UserCred__3214EC0734673BE7");
+
+            entity.Property(e => e.PasswordHash)
+                .HasMaxLength(56)
+                .IsUnicode(false)
+                .IsFixedLength();
+            entity.Property(e => e.Username).HasMaxLength(100);
         });
 
         OnModelCreatingPartial(modelBuilder);

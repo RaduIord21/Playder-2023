@@ -22,6 +22,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.9" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SummerCamp.DataModels\SummerCamp.DataModels.csproj">
@@ -40,6 +42,7 @@
     <None Remove="Views\Competitions\" />
     <None Remove="Views\CompetitionMatches\" />
     <None Remove="Views\CompetitionTeams\" />
+    <None Remove="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Infrastructure\" />
@@ -51,6 +54,7 @@
     <Folder Include="Views\CompetitionMatches\" />
     <Folder Include="Views\CompetitionTeams\" />
     <Folder Include="wwwroot\Images\" />
+    <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\Images\" />

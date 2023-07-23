@@ -29,6 +29,18 @@ var mapperConfig = new MapperConfiguration(mc =>
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
+
+//Session
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+//session
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,13 +54,18 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
 
+//Session
+
+//session
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Welcome}/{id?}");
 
 
 app.Run();
