@@ -25,9 +25,15 @@ namespace SummerCamp.Controllers
         }
         public IActionResult Index()
         {
-            var coaches = _coachRepository.GetAll();
-            var coachModels = _mapper.Map<List<CoachViewModel>>(coaches);
-            return View(coachModels);
+            string user = HttpContext.Session.GetString("Username");
+            if (!string.IsNullOrEmpty(user))
+            {
+                var coaches = _coachRepository.GetAll();
+                var coachModels = _mapper.Map<List<CoachViewModel>>(coaches);
+                return View(coachModels);
+            }
+            
+            return View("LoginError");
         }
 
         public IActionResult Add() {

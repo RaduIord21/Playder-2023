@@ -29,9 +29,14 @@ namespace SummerCamp.Controllers
         }
         public IActionResult Index()
         {
-           var sponsors = _sponsorRepository.GetAll();
-           var sponsorModels = _mapper.Map<List<SponsorViewModel>>(sponsors);
-           return View(sponsorModels);
+            string user = HttpContext.Session.GetString("Username");
+            if (!string.IsNullOrEmpty(user))
+            {
+                var sponsors = _sponsorRepository.GetAll();
+                var sponsorModels = _mapper.Map<List<SponsorViewModel>>(sponsors);
+                return View(sponsorModels);
+            }
+            return View("LoginError");
         }
 
         public IActionResult Add()
@@ -41,7 +46,7 @@ namespace SummerCamp.Controllers
 
         [HttpPost]
         public IActionResult Add(SponsorViewModel sponsorViewModel)
-        {
+        { 
             if (ModelState.IsValid)
             {
                 _sponsorRepository.Add(_mapper.Map<Sponsor>(sponsorViewModel));

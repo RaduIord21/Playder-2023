@@ -180,12 +180,9 @@ public partial class SummerCampDbContext : DbContext
 
         modelBuilder.Entity<UserCredential>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserCred__3214EC0734673BE7");
-
             entity.Property(e => e.PasswordHash)
-                .HasMaxLength(56)
-                .IsUnicode(false)
-                .IsFixedLength();
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.Username).HasMaxLength(100);
         });
 

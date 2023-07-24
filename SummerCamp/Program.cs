@@ -17,6 +17,7 @@ builder.Services.AddScoped(typeof(ICompetitionRepository), typeof(CompetitionRep
 builder.Services.AddScoped(typeof(ICompetitionMatchRepository), typeof(CompetitionMatchRepository));
 builder.Services.AddScoped(typeof(ICompetitionTeamRepository), typeof(CompetitionTeamRepository));
 builder.Services.AddScoped(typeof(ITeamSponsorRepository), typeof(TeamSponsorsRepository));
+builder.Services.AddScoped(typeof(IUserCredentialRepository), typeof(UserCredentialRepository));
 
 builder.Services.AddDbContext<SummerCampDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SummerCamp")));
@@ -65,7 +66,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Welcome}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 app.Run();

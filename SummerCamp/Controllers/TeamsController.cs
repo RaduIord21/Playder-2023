@@ -43,9 +43,15 @@ namespace SummerCamp.Controllers
         }
         public IActionResult Index()
         {
-            var teams = _teamRepository.GetAll();
-            var TeamModels = _mapper.Map<List<TeamViewModel>>(teams);
-            return View(TeamModels);
+            string user = HttpContext.Session.GetString("Username");
+
+            if (!string.IsNullOrEmpty(user))
+            {
+                var teams = _teamRepository.GetAll();
+                var TeamModels = _mapper.Map<List<TeamViewModel>>(teams);
+                return View(TeamModels);
+            }
+            return View("LoginError");
         }
 
         public IActionResult Add()

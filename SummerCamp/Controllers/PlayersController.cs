@@ -27,16 +27,21 @@ namespace SummerCamp.Controllers
         }
         public IActionResult Index()
         {
+            string user = HttpContext.Session.GetString("Username");
             var players = _playerRepository.GetAll();
-            foreach (var player in players)
+            if (!string.IsNullOrEmpty(user))
             {
-                if (player.TeamId != null)
+                foreach (var player in players)
                 {
-                    player.Team = _teamRepository.GetById((int)player.TeamId);
+                    if (player.TeamId != null)
+                    {
+                        player.Team = _teamRepository.GetById((int)player.TeamId);
+                    }
                 }
+                var playerModels = _mapper.Map<List<PlayerViewModel>>(players);
+                return View(playerModels);
             }
-            var playerModels = _mapper.Map<List<PlayerViewModel>>(players);
-            return View(playerModels);
+            return View("LoginError");
         }
 
             public IActionResult Add(){
