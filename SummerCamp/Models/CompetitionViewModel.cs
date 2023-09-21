@@ -21,7 +21,6 @@ namespace SummerCamp.Models
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
-        [Required(ErrorMessage = "Va rugam adaugati un sponsor.")]
 
         public int? SponsorId { get; set; }
 

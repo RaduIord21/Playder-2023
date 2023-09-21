@@ -29,20 +29,24 @@ namespace SummerCamp.Controllers
 
         // POST: /Account/Login
         [HttpPost]
-        public IActionResult Login(string username, string password)
+        public IActionResult Login(UserCredentialViewModel userCredentialViewModel)
         {
-            var user = _userCredentialRepository.Get(uC => uC.Username == username && uC.PasswordHash == HashPassword(password));
+            if (ModelState.IsValid)
+            {
+                var user = _userCredentialRepository.Get(uC => uC.Username == userCredentialViewModel.Username && uC.PasswordHash == HashPassword(userCredentialViewModel.PasswordHash));
 
-            if (user.Count() != 0)
-            {
-                HttpContext.Session.SetString("Username", username);
-                return RedirectToAction("Welcome");
+                if (user.Count() != 0)
+                {
+                    HttpContext.Session.SetString("Username", userCredentialViewModel.Username);
+                    return RedirectToAction("Welcome");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Nume de utilizator sau parola incorecte!";
+                    return View();
+                }
             }
-            else
-            {
-                ViewBag.ErrorMessage = "Invalid username or password";
-                return View();
-            }
+            return View(userCredentialViewModel);
         }
         public IActionResult Logout()
         {
@@ -75,25 +79,31 @@ namespace SummerCamp.Controllers
         [HttpPost]
         public IActionResult Register(UserCredentialViewModel userCredentialViewModel)
         {
-            var existingUser = _userCredentialRepository.Get(uC => uC.Username == userCredentialViewModel.Username);
-            // Check if the username is already taken
-            if (existingUser.Count() != 0)
-            {
-                ViewBag.ErrorMessage = "Username is already taken";
-                return View(userCredentialViewModel);
-            }
-
             if (ModelState.IsValid)
             {
+                var existingUser = _userCredentialRepository.Get(uC => uC.Username == userCredentialViewModel.Username);
+                // Check if the username is already taken
+                if (existingUser.Count() != 0)
+                {
+                    ViewBag.ErrorMessage = "Username is already taken";
+                    return View(userCredentialViewModel);
+                }
+
                 userCredentialViewModel.PasswordHash = HashPassword(userCredentialViewModel.PasswordHash);
                 _userCredentialRepository.Add(_mapper.Map<UserCredential>(userCredentialViewModel));
                 _userCredentialRepository.Save();
+                return RedirectToAction("Welcome");
             }
-            return RedirectToAction("Welcome");
+            return View(userCredentialViewModel);
         }
 
         public static string HashPassword(string input)
         {
+
+            if (input == null)
+            {
+                return null;
+            }
             // Convert the input string to a byte array
             byte[] data = Encoding.UTF8.GetBytes(input);
 

@@ -77,7 +77,6 @@ namespace SummerCamp.Controllers
                 each.CoachId = null;
                 each.Coach = null;
             }
-        
             _coachRepository.Delete(coach);
             _coachRepository.Save();
             return RedirectToAction("Index");

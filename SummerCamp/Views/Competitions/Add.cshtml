@@ -28,13 +28,13 @@
         <span asp-validation-for="EndDate" class="text-danger"></span>
 
         <div class="form-group">
-            <label asp-for="SponsorId" class="control-label"></label>
+            <label asp-for="SponsorId" class="control-label">Sponsor</label>
             @Html.DropDownList("SponsorId", (IEnumerable<SelectListItem>)ViewData["Sponsors"], "Selecteaza sponsor", new { @class = "form-control" })
             <span asp-validation-for="SponsorId" class="text-danger"></span>
             @ViewData["Error"]
         </div>
         <div class="form-group border border-2 rounded-3 p-2 m-2">
-            <h5><label asp-for="SelectedTeamIds" class="control-label">Teams</label></h5>
+            <h5><label asp-for="SelectedTeamIds" class="control-label">Echipe</label></h5>
             @{
                 @foreach (var team in Model.Teams)
                 {

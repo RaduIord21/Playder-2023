@@ -21,6 +21,7 @@ namespace SummerCamp.Controllers
         private readonly ITeamSponsorRepository _teamSponsorRepository;
         private readonly ISponsorRepository _sponsorRepository;
         private readonly ICompetitionTeamRepository _competitionTeamRepository;
+        private readonly ICompetitionMatchRepository _competitionMatchRepository;
 
 
         public TeamsController(
@@ -30,7 +31,8 @@ namespace SummerCamp.Controllers
             IPlayerRepository playerRepository,
             ITeamSponsorRepository teamSponsorRepository,
             ISponsorRepository sponsorRepository,
-            ICompetitionTeamRepository competitionTeamRepository
+            ICompetitionTeamRepository competitionTeamRepository,
+            ICompetitionMatchRepository competitionMatchRepository
             )
         {
             _mapper = mapper;
@@ -39,7 +41,8 @@ namespace SummerCamp.Controllers
             _playerRepository = playerRepository;
             _teamSponsorRepository = teamSponsorRepository;
             _sponsorRepository = sponsorRepository;
-            _competitionTeamRepository = competitionTeamRepository; 
+            _competitionTeamRepository = competitionTeamRepository;
+            _competitionMatchRepository = competitionMatchRepository;
         }
         public IActionResult Index()
         {
@@ -56,12 +59,7 @@ namespace SummerCamp.Controllers
 
         public IActionResult Add()
         {
-            var coaches = _coachRepository.GetAll();
-            var freeCoaches = from coach in coaches
-                              join team in _teamRepository.GetAll() on coach.Id equals team.CoachId into teams
-                              from t in teams.DefaultIfEmpty()
-                              where t == null
-                              select coach;
+            var freeCoaches = _coachRepository.Get(c => c.Teams.Count() == 0);
             var coachesList = new SelectList(freeCoaches, "Id", "Name").ToList();
             ViewData["Coaches"] = coachesList;
             var players = _playerRepository.Get(p => p.TeamId == null);
@@ -110,8 +108,8 @@ namespace SummerCamp.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            var coaches = _coachRepository.GetAll();
-            var coachesList = new SelectList(coaches, "Id", "Name").ToList();
+            var freeCoaches = _coachRepository.Get(c => c.Teams.Count() == 0);
+            var coachesList = new SelectList(freeCoaches, "Id", "Name").ToList();
             ViewData["Coaches"] = coachesList;
             ViewBag.Sponsors = sponsors;
             teamViewModel.Players = _mapper.Map<List<PlayerViewModel>>(players);
@@ -123,9 +121,9 @@ namespace SummerCamp.Controllers
             var team = _teamRepository.GetById(teamId);
             var sponsors = _sponsorRepository.GetAll();
             ViewBag.Sponsors = sponsors;
-            var freeCoaches = _coachRepository.Get(c=>c.Teams == null || c.Teams.Contains(team));
+            var freeCoaches = _coachRepository.Get(c=>c.Teams.Count() == 0 || c.Teams.Contains(team));
             var coachesList = new SelectList(freeCoaches, "Id", "Name").ToList();
-            ViewData["Coaches"] = coachesList;
+            ViewBag.Coaches = coachesList;
             var players = _playerRepository.Get(p => p.TeamId == null || p.TeamId == teamId);
             var teamViewModel = _mapper.Map<TeamViewModel>(team);
             teamViewModel.Players = _mapper.Map<List<PlayerViewModel>>(players) ;
@@ -141,6 +139,7 @@ namespace SummerCamp.Controllers
             ViewBag.Sponsors = sponsors;
             var existingSponsors = _teamSponsorRepository.Get(tS => tS.TeamId == teamViewModel.Id).Select(tS => tS.SponsorId).ToList();
             var players = _playerRepository.Get(p => p.TeamId == null || p.TeamId == teamViewModel.Id);
+            var team = _mapper.Map<Team>(teamViewModel);
             if (ModelState.IsValid)
             {
                 foreach (var player in players)
@@ -156,7 +155,6 @@ namespace SummerCamp.Controllers
                     _playerRepository.Update(player);
                     _playerRepository.Save();
                 }
-                var team = _mapper.Map<Team>(teamViewModel);
                 _teamRepository.Update(team);
                 _teamRepository.Save();
                 foreach (var sponsor in sponsors)
@@ -185,12 +183,13 @@ namespace SummerCamp.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            var coaches = _coachRepository.GetAll(); 
-            var coachesList = new SelectList(coaches, "Id", "Name").ToList();
+            var freeCoaches = _coachRepository.Get(c => c.Teams.Count() == 0 || c.Teams.Contains(team));
+            var coachesList = new SelectList(freeCoaches, "Id", "Name").ToList();
             ViewData["Coaches"] = coachesList;
             teamViewModel.Players = _mapper.Map<List<PlayerViewModel>>(players);
             return View(teamViewModel);
         }
+
         public IActionResult Delete(int TeamId)
         {
             var Team = _teamRepository.GetById(TeamId);
@@ -207,8 +206,14 @@ namespace SummerCamp.Controllers
             }
             var competitionTeams = _competitionTeamRepository.Get(cT => cT.TeamId == TeamId);
             foreach (var competitionTeam in competitionTeams) {
-                competitionTeam.Team = null;
-                competitionTeam.TeamId = null;
+               _competitionTeamRepository.Delete(competitionTeam) ;
+            }
+
+            var competitonMatches = _competitionMatchRepository.Get(cM => cM.AwayTeamId == TeamId || cM.HomeTeamId == TeamId);
+            foreach (var competitionMatch in competitonMatches)
+            {
+                _competitionMatchRepository.Delete(competitionMatch);
+                
             }
             _teamRepository.Delete(Team);
             _teamRepository.Save();

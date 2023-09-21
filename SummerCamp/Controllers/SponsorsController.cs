@@ -16,16 +16,19 @@ namespace SummerCamp.Controllers
         private readonly ISponsorRepository _sponsorRepository;
         private readonly ITeamSponsorRepository _teamSponsorRepository;
         private readonly ICompetitionRepository _competitionRepository;
+        private readonly ITeamRepository _teamRepository;
 
         public SponsorsController(IMapper mapper,
             ISponsorRepository sponsorRepository,
             ITeamSponsorRepository teamSponsorRepository,
-            ICompetitionRepository competitionRepository)
+            ICompetitionRepository competitionRepository,
+            ITeamRepository teamRepository)
         {
             _mapper = mapper;
             _sponsorRepository = sponsorRepository;
             _teamSponsorRepository = teamSponsorRepository;
             _competitionRepository = competitionRepository;
+            _teamRepository = teamRepository;
         }
         public IActionResult Index()
         {
@@ -80,14 +83,13 @@ namespace SummerCamp.Controllers
             var competitions = _competitionRepository.Get(c => c.SponsorId == SponsorId);
             foreach (var teamSponsor in teamSponsors)
             {
-                teamSponsor.SponsorId = null;
-                teamSponsor.Sponsor = null;
+                _teamSponsorRepository.Delete(teamSponsor);
             }
 
             foreach (var competition in competitions) {
-                competition.SponsorId = null;
                 competition.Sponsor = null;
             }
+
             _sponsorRepository.Delete(sponsor);
             _sponsorRepository.Save();
             return RedirectToAction("Index");

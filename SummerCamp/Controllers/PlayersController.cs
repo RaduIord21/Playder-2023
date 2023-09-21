@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SummerCamp.DataAccessLayer.Interfaces;
 using SummerCamp.DataAccessLayer.Repositories;
+using SummerCamp.DataModels.Enums;
 using SummerCamp.DataModels.Models;
 using SummerCamp.Models;
 
@@ -45,7 +46,17 @@ namespace SummerCamp.Controllers
         }
 
             public IActionResult Add(){
-            return View();
+            var playerModel = new PlayerViewModel
+            {
+                PositionList = Enum.GetValues(typeof(PositionEnum)).Cast<PositionEnum>().Select(
+                    p => new SelectListItem
+                    {
+                        Text = p.ToString(),
+                        Value = ((int)p).ToString()
+                    })
+                    .ToList()
+            };
+            return View(playerModel);
         }
 
         [HttpPost]
@@ -57,6 +68,13 @@ namespace SummerCamp.Controllers
                 _playerRepository.Save();
                 return RedirectToAction("Index");
             }
+            PlayerViewModel.PositionList = Enum.GetValues(typeof(PositionEnum)).Cast<PositionEnum>().Select(
+                    p => new SelectListItem
+                    {
+                        Text = p.ToString(),
+                        Value = ((int)p).ToString()
+                    })
+                    .ToList();
             return View(PlayerViewModel);
         }
 
@@ -78,6 +96,10 @@ namespace SummerCamp.Controllers
                 _playerRepository.Save();
                 return RedirectToAction("Index");
             }
+            var teams = _teamRepository.GetAll();
+            var teamsList = new SelectList(teams, "Id", "Name").ToList();
+            ViewData["Teams"] = teamsList;
+
             return View(playerViewModel);
         }
         public IActionResult Delete(int PlayerId)

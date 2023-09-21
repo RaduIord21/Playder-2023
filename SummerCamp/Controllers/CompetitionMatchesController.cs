@@ -32,23 +32,27 @@ namespace SummerCamp.Controllers
 			var competitonMatches = _competitionMatchRepository.GetAll();
 			ViewData["CompetitionId"] = competitionId;
 			foreach (var competitionMatch in competitonMatches) {	
-				competitionMatch.AwayTeam = _teamRepository.GetById(competitionMatch.AwayTeamId);
-				competitionMatch.HomeTeam = _teamRepository.GetById(competitionMatch.HomeTeamId);
+				competitionMatch.AwayTeam = _teamRepository.GetById((int)competitionMatch.AwayTeamId);
+				competitionMatch.HomeTeam = _teamRepository.GetById((int)competitionMatch.HomeTeamId);
 			}
 			return View(_mapper.Map<List<CompetitonMatchViewModel>>(competitonMatches));
 		}
 
 		public IActionResult Add(int CompetitionId)
 		{
-			var awayTeams = _teamRepository.GetAll();
-			var homeTeams = _teamRepository.GetAll();
-			var awayTeamsList = new SelectList(awayTeams, "Id", "Name").ToList();
-			var homeTeamsList = new SelectList(homeTeams, "Id", "Name").ToList();
-			ViewData["AwayTeams"] = awayTeamsList;
-			ViewData["HomeTeams"] = homeTeamsList;
-			ViewData["Competion"] = CompetitionId;
-			var competitionMatchViewModel = new CompetitonMatchViewModel { Competition = _competitonRepository.GetById(CompetitionId)};
-			return View(competitionMatchViewModel);
+            string user = HttpContext.Session.GetString("Username");
+			if (!string.IsNullOrEmpty(user)) {
+				var awayTeams = _teamRepository.GetAll();
+				var homeTeams = _teamRepository.GetAll();
+				var awayTeamsList = new SelectList(awayTeams, "Id", "Name").ToList();
+				var homeTeamsList = new SelectList(homeTeams, "Id", "Name").ToList();
+				ViewData["AwayTeams"] = awayTeamsList;
+				ViewData["HomeTeams"] = homeTeamsList;
+				ViewData["Competion"] = CompetitionId;
+				var competitionMatchViewModel = new CompetitonMatchViewModel { Competition = _competitonRepository.GetById(CompetitionId) };
+				return View(competitionMatchViewModel);
+			}
+			return View("LoginError");
 		}
 
 		[HttpPost]
@@ -86,15 +90,19 @@ namespace SummerCamp.Controllers
         }
 
 		public IActionResult Edit(int competitionMatchId) {
-			var competitionMatch = _competitionMatchRepository.GetById(competitionMatchId);
-            var awayTeams = _teamRepository.GetAll();
-            var homeTeams = _teamRepository.GetAll();
-            var awayTeamsList = new SelectList(awayTeams, "Id", "Name").ToList();
-            var homeTeamsList = new SelectList(homeTeams, "Id", "Name").ToList();
-            ViewData["AwayTeams"] = awayTeamsList;
-            ViewData["HomeTeams"] = homeTeamsList;
-			var competitionViewModel = _mapper.Map<CompetitonMatchViewModel>(competitionMatch);
-            return View(competitionViewModel);
+            string user = HttpContext.Session.GetString("Username");
+			if (!string.IsNullOrEmpty(user)) {
+				var competitionMatch = _competitionMatchRepository.GetById(competitionMatchId);
+				var awayTeams = _teamRepository.GetAll();
+				var homeTeams = _teamRepository.GetAll();
+				var awayTeamsList = new SelectList(awayTeams, "Id", "Name").ToList();
+				var homeTeamsList = new SelectList(homeTeams, "Id", "Name").ToList();
+				ViewData["AwayTeams"] = awayTeamsList;
+				ViewData["HomeTeams"] = homeTeamsList;
+				var competitionViewModel = _mapper.Map<CompetitonMatchViewModel>(competitionMatch);
+				return View(competitionViewModel);
+			}
+			return View("LoginError");
         }
 		[HttpPost]
 		public IActionResult Edit(CompetitonMatchViewModel competitionMatchViewModel) {
@@ -117,12 +125,16 @@ namespace SummerCamp.Controllers
 			return View(competitionMatchViewModel);
 		}
 		public IActionResult Delete(int competitionMatchId) {
-			var competitionMatchViewModel = _competitionMatchRepository.GetById(competitionMatchId);
-            competitionMatchViewModel.AwayTeam = _teamRepository.GetById(competitionMatchViewModel.AwayTeamId);
-            competitionMatchViewModel.HomeTeam = _teamRepository.GetById(competitionMatchViewModel.HomeTeamId);
-            competitionMatchViewModel.Competition = _competitonRepository.GetById(competitionMatchViewModel.CompetitionId);
-            _competitionMatchRepository.Delete(_mapper.Map<CompetitionMatch>(competitionMatchViewModel));
-			_competitionMatchRepository.Save();
+            string user = HttpContext.Session.GetString("Username");
+			if (!string.IsNullOrEmpty(user))
+			{
+				var competitionMatchViewModel = _competitionMatchRepository.GetById(competitionMatchId);
+				competitionMatchViewModel.AwayTeam = _teamRepository.GetById((int)competitionMatchViewModel.AwayTeamId);
+				competitionMatchViewModel.HomeTeam = _teamRepository.GetById((int)competitionMatchViewModel.HomeTeamId);
+				competitionMatchViewModel.Competition = _competitonRepository.GetById(competitionMatchViewModel.CompetitionId);
+				_competitionMatchRepository.Delete(_mapper.Map<CompetitionMatch>(competitionMatchViewModel));
+				_competitionMatchRepository.Save();
+			}
 			return RedirectToAction("Index");
 		}
 		

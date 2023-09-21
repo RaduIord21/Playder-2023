@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SummerCamp.DataModels.Enums;
 using SummerCamp.DataModels.Models;
 
@@ -23,6 +24,8 @@ namespace SummerCamp.Models
         [Required(ErrorMessage = "Va rugam adaugati pozitia jucatiorului.\n")]
 
         public PositionEnum? Position { get; set; }
+
+        public List<SelectListItem>? PositionList { get; set; }
 
         public int? TeamId { get; set; }
 

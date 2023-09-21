@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SummerCamp.DataAccessLayer.Interfaces;
-using SummerCamp.DataAccessLayer.Repositories;
 using SummerCamp.DataModels.Models;
 using SummerCamp.Models;
 
@@ -60,22 +55,27 @@ namespace SummerCamp.Controllers
         }
 
         public IActionResult Add(int competitionId) {
-            var teams = _teamRepository.GetAll();
-            ViewBag.Teams = teams;
-            var competitionTeamViewModel = new CompetitionTeamViewModel
+            string user = HttpContext.Session.GetString("Username");
+            if (!string.IsNullOrEmpty(user))
             {
-                Competition = _competitionRepository.GetById(competitionId)
-            };
-            competitionTeamViewModel.SelectedTeamIds = _competitionTeamRepository.Get(t => t.CompetitionId == competitionId).Select(t => (int)t.TeamId).ToList();
-            ViewBag.CompetitionId = competitionId;
-            return View(competitionTeamViewModel);
+                var teams = _teamRepository.GetAll();
+                ViewBag.Teams = teams;
+                var competitionTeamViewModel = new CompetitionTeamViewModel
+                {
+                    Competition = _competitionRepository.GetById(competitionId)
+                };
+                competitionTeamViewModel.SelectedTeamIds = _competitionTeamRepository.Get(t => t.CompetitionId == competitionId).Select(t => (int)t.TeamId).ToList();
+                ViewBag.CompetitionId = competitionId;
+                return View(competitionTeamViewModel);
+            }
+            return View("LoginError");
         }
 
         [HttpPost]
         public IActionResult Add(CompetitionTeamViewModel competitionTeamViewModel) {
             if (ModelState.IsValid)
             {
-                competitionTeamViewModel.Competition = _competitionRepository.GetById(competitionTeamViewModel.CompetitionId);
+                competitionTeamViewModel.Competition = _competitionRepository.GetById((int)competitionTeamViewModel.CompetitionId);
                 var formerSelectedTeamIds = _competitionTeamRepository.Get(t => t.CompetitionId == competitionTeamViewModel.CompetitionId).Select(t => (int)t.TeamId).ToList();
                 var allTeamIds = _teamRepository.GetAll().Select(t => t.Id).ToList();
                 foreach (var team in allTeamIds) {

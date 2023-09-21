@@ -48,12 +48,17 @@ namespace SummerCamp.Controllers
 
         public IActionResult Add()
         {
-            var sponsors = _sponsorRepository.GetAll();
-            var sponsorsSelectList = new SelectList(sponsors, "Id", "Name");
-            ViewData["Sponsors"] = sponsorsSelectList;
-            var teams = _teamRepository.GetAll();
-            var competitionViewModel = new CompetitionViewModel { Teams = _mapper.Map<List<TeamViewModel>>(teams) };
-            return View(competitionViewModel);
+            string user = HttpContext.Session.GetString("Username");
+            if(!string.IsNullOrEmpty(user))
+            {
+                var sponsors = _sponsorRepository.GetAll();
+                var sponsorsSelectList = new SelectList(sponsors, "Id", "Name");
+                ViewData["Sponsors"] = sponsorsSelectList;
+                var teams = _teamRepository.GetAll();
+                var competitionViewModel = new CompetitionViewModel { Teams = _mapper.Map<List<TeamViewModel>>(teams) };
+                return View(competitionViewModel);
+            }
+            return View("LoginError");
         }
 
         [HttpPost]
@@ -74,11 +79,16 @@ namespace SummerCamp.Controllers
 
         public IActionResult Edit(int CompetitionId)
         {
-            var competition = _competitionRepository.GetById(CompetitionId);
-            var sponsors = _sponsorRepository.GetAll();
-            var sponsorsSelectList = new SelectList(sponsors, "Id", "Name");
-            ViewData["Sponsors"] = sponsorsSelectList;
-            return View(_mapper.Map<CompetitionViewModel>(competition));
+            string user = HttpContext.Session.GetString("Username");
+            if (!string.IsNullOrEmpty(user))
+            {
+                var competition = _competitionRepository.GetById(CompetitionId);
+                var sponsors = _sponsorRepository.GetAll();
+                var sponsorsSelectList = new SelectList(sponsors, "Id", "Name");
+                ViewData["Sponsors"] = sponsorsSelectList;
+                return View(_mapper.Map<CompetitionViewModel>(competition));
+            }
+            return View("LoginError");
         }
 
         [HttpPost]
@@ -90,22 +100,30 @@ namespace SummerCamp.Controllers
                 _competitionRepository.Save();
                 return RedirectToAction("Index");
             }
+            var sponsors = _sponsorRepository.GetAll();
+            var sponsorsSelectList = new SelectList(sponsors, "Id", "Name");
+            ViewData["Sponsors"] = sponsorsSelectList;
             return View(competitionViewModel);
         }
         public IActionResult Delete(int CompetitionId)
         {
-            var competition = _competitionRepository.GetById(CompetitionId);
-
-            var competitionTeams = _competitionTeamRepository.Get(cT => cT.CompetitionId == CompetitionId).ToList();
-            foreach(var cTeam in competitionTeams) {
-                _competitionTeamRepository.Delete(cTeam);
+            string user = HttpContext.Session.GetString("Username");
+            if (!string.IsNullOrEmpty(user))
+            {
+                var competition = _competitionRepository.GetById(CompetitionId);
+                var competitionTeams = _competitionTeamRepository.Get(cT => cT.CompetitionId == CompetitionId).ToList();
+                foreach (var cTeam in competitionTeams)
+                {
+                    _competitionTeamRepository.Delete(cTeam);
+                }
+                var competitionMatches = _competitionMatchRepository.Get(cM => cM.CompetitionId == CompetitionId);
+                foreach (var cMatches in competitionMatches)
+                {
+                    _competitionMatchRepository.Delete(cMatches);
+                }
+                _competitionRepository.Delete(competition);
+                _competitionRepository.Save();
             }
-            var competitionMatches = _competitionMatchRepository.Get(cM => cM.CompetitionId == CompetitionId);
-            foreach (var cMatches in competitionMatches) {
-                _competitionMatchRepository.Delete(cMatches);
-            }
-            _competitionRepository.Delete(competition);
-            _competitionRepository.Save();
             return RedirectToAction("Index");
         }
     }

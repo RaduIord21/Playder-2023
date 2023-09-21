@@ -13,13 +13,17 @@
 }
 
 <form method="post" asp-action="Register">
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" name="username" required />
+    <div class="d-flex form-group m-2">
+        <label for="username" class="align-self-center p-2">Username:</label>
+        <input type="text" name="username" class="form-control w-25"/>
+        <span asp-validation-for="Username" class="text-danger"></span>
     </div>
-    <div>
-        <label for="passwordHash">Password:</label>
-        <input type="password" name="passwordHash" required />
+    <div class="d-flex form-group m-2">
+        <label for="passwordHash" class="align-self-center p-2 me-1">Password:</label>
+        <input type="password" name="passwordHash" class="form-control w-25"/>
+        <span asp-validation-for="PasswordHash" class="text-danger"></span>
     </div>
-    <button type="submit">Register</button>
+    <div class="d-flex form-group m-2">
+        <button type="submit" name="submit" class="btn btn-primary" style="width:24.5vw; margin:0;">Inregistreaza-te</button>
+    </div>
 </form>

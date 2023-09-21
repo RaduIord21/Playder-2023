@@ -73,24 +73,22 @@ public partial class SummerCampDbContext : DbContext
 
         modelBuilder.Entity<CompetitionMatch>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Competit__3214EC078ED1AAE7");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC079C4CAD84");
 
             entity.ToTable("CompetitionMatch");
 
             entity.HasOne(d => d.AwayTeam).WithMany(p => p.CompetitionMatchAwayTeams)
                 .HasForeignKey(d => d.AwayTeamId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Competiti__AwayT__5EBF139D");
+                .HasConstraintName("FK__Competiti__AwayT__0B91BA14");
 
             entity.HasOne(d => d.Competition).WithMany(p => p.CompetitionMatches)
                 .HasForeignKey(d => d.CompetitionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Competiti__Compe__5FB337D6");
+                .HasConstraintName("FK__Competiti__Compe__0D7A0286");
 
             entity.HasOne(d => d.HomeTeam).WithMany(p => p.CompetitionMatchHomeTeams)
                 .HasForeignKey(d => d.HomeTeamId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Competiti__HomeT__60A75C0F");
+                .HasConstraintName("FK__Competiti__HomeT__0C85DE4D");
         });
 
         modelBuilder.Entity<CompetitonTeam>(entity =>

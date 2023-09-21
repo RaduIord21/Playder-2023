@@ -18,8 +18,8 @@
         <span asp-validation-for="NickName" class="text-danger"></span>
 
         <div class="form-group">
-            <label asp-for="CoachId" class="control-label"></label>
-            @Html.DropDownList("CoachId", (IEnumerable<SelectListItem>)ViewData["Coaches"], "Selecteaza antrenor", new { @class = "form-control" })
+            <label asp-for="CoachId" class="control-label">Antrenori</label>
+            @Html.DropDownList("CoachId", (IEnumerable<SelectListItem>)ViewBag.Coaches, "Selecteaza antrenor", new { @class = "form-control" })
             <span asp-validation-for="CoachId" class="text-danger"></span>
             @ViewData["Error"]
         </div>
@@ -37,7 +37,7 @@
                 <span asp-validation-for="SelectedPlayerIds" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SelectedSponsorIds" class="control-label">Sponsors</label>
+                <label asp-for="SelectedSponsorIds" class="control-label">Sponsori</label>
                 @foreach (var teamSposnsor in ViewBag.Sponsors)
                 {
                     <div>

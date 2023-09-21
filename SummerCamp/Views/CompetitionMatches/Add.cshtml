@@ -6,23 +6,23 @@
 <form id="myForm" asp-action="Add" method="post" class="needs-validation" novalidate>
     <div class="form-group">
         <input asp-for="CompetitionId" hidden class="form-control" />
-        <label asp-for="AwayTeamId" class="control-label"></label>
+        <label asp-for="AwayTeamId" class="control-label">Echipa Gazda</label>
         @Html.DropDownList("AwayTeamId", (IEnumerable<SelectListItem>)ViewData["AwayTeams"], "Selecteaza Echipa Gazda", new { @class = "form-control" })
         <span asp-validation-for="AwayTeamId" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="HomeTeamId" class="control-label"></label>
+        <label asp-for="HomeTeamId" class="control-label">Echipa Oaspete</label>
         @Html.DropDownList("HomeTeamId", (IEnumerable<SelectListItem>)ViewData["HomeTeams"], "Selecteaza Echipa Oaspete", new { @class = "form-control" })
         <span asp-validation-for="HomeTeamId" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="AwayTeamGoals" class="control-label"></label>
+        <label asp-for="AwayTeamGoals" class="control-label">Goluri Oaspeti</label>
         <input asp-for="AwayTeamGoals" class="control-label" min="0" max="100" />
         <span asp-validation-for="AwayTeamGoals" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="HomeTeamGoals" class="control-label"></label>
+        <label asp-for="HomeTeamGoals" class="control-label">Goluri Gazda</label>
         <input asp-for="HomeTeamGoals" class="control-label" min="0" max="100" />
         <span asp-validation-for="HomeTeamGoals" class="text-danger"></span>
     </div>

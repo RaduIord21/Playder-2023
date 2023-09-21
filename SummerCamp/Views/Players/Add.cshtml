@@ -1,34 +1,30 @@
 ﻿@{
-    ViewData["Title"] = "Adauga Antrenor";
+    ViewData["Title"] = "Adauga Jucator";
 }
 
 @model PlayerViewModel
 
 <form id="myForm" asp-action="Add" method="post" class="needs-validation" novalidate>
     <div class="form-group">
-        <label asp-for="FullName"></label>
+        <label asp-for="FullName">Nume Complet</label>
         <input asp-for="FullName" class="form-control" />
         <span asp-validation-for="FullName" class="text-danger"></span>
 
-        <label asp-for="BirthDate"></label>
+        <label asp-for="BirthDate">Data nasterii</label>
         <input asp-for="BirthDate" type="date" class="form-control" />
         <span asp-validation-for="BirthDate" class="text-danger"></span>
 
-        <label asp-for="Adress"></label>
+        <label asp-for="Adress">Adresa</label>
         <input asp-for="Adress" class="form-control" />
         <span asp-validation-for="Adress" class="text-danger"></span>
 
-        <label asp-for="Position"></label>
-        <input asp-for="Position" class="form-control" />
+        <label asp-for="Position">Pozitie (1 - portar, 2 - Fundas, 3 - Mijlocas, 4 - Atacant central, 5 - Atacant lateral)</label>
+        <select asp-for="Position" asp-items="Model.PositionList" class="form-control"></select>
         <span asp-validation-for="Position" class="text-danger"></span>
 
-        <label asp-for="ShirtNumber"></label>
+        <label asp-for="ShirtNumber">Numar de pe tricou</label>
         <input asp-for="ShirtNumber" class="form-control" />
         <span asp-validation-for="ShirtNumber" class="text-danger"></span>
-
-
-
-
     </div>
     <!-- Additional form fields and submit button -->
 
